@@ -185,13 +185,14 @@ const Section = ({ id, title, children }: { id: string; title?: string; children
       }
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+    const currentRef = sectionRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
   }, []);
@@ -357,13 +358,14 @@ function TabbedProjects() {
       }
     );
 
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
+    const currentRef = containerRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (containerRef.current) {
-        observer.unobserve(containerRef.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
   }, []);
@@ -380,7 +382,7 @@ function TabbedProjects() {
             className={`flex flex-col items-center justify-center bg-black/80 border-2 ${selectedTab === idx ? 'border-yellow-400' : 'border-gray-800'} rounded-2xl px-8 py-4 min-w-[140px] max-w-[180px] shadow-lg hover:scale-105 transition-all duration-200 focus:ring-2 focus:ring-yellow-400 outline-none`}
             onClick={() => setSelectedTab(idx)}
             tabIndex={0}
-            aria-selected={selectedTab === idx}
+            
           >
             <img
               src={categoryImages[group.category as keyof typeof categoryImages]}
@@ -526,13 +528,14 @@ function ExperienceTimeline() {
       }
     );
 
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
+    const currentRef = containerRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (containerRef.current) {
-        observer.unobserve(containerRef.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
   }, []);
@@ -760,11 +763,11 @@ export default function Home() {
                     <h3 className="text-2xl font-bold text-cyan-300">Who I Am</h3>
                   </div>
                   <p className="text-gray-300 text-lg leading-relaxed">
-                    Hello! I'm <span className="text-cyan-400 font-semibold">Rodrigo</span>, a senior computer science student 
+                    Hello! I&apos;m <span className="text-cyan-400 font-semibold">Rodrigo</span>, a senior computer science student 
                     who loves to explore different challenges in programming and beyond.
                   </p>
                   <p className="text-gray-300 text-lg leading-relaxed">
-                    Currently in my free time, I'm diving deep into <span className="text-cyan-400 font-semibold">GoLang</span> and 
+                    Currently in my free time, I&apos;m diving deep into <span className="text-cyan-400 font-semibold">GoLang</span> and 
                     exploring <span className="text-cyan-400 font-semibold">systems-level work</span> to expand my technical horizons.
                   </p>
                 </div>
