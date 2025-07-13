@@ -1,166 +1,15 @@
 'use client';
 import React, { useEffect, useState, useRef } from "react";
 
-const BOARD_ROWS = 12;
-const BOARD_COLS = 8;
 
-// Add more Tetris shapes for variety
-const TETROMINOES = [
-  { shape: [[1, 1, 1, 1]], color: "bg-cyan-400" }, // I
-  { shape: [[1, 1], [1, 1]], color: "bg-yellow-400" }, // O
-  { shape: [[0, 1, 0], [1, 1, 1]], color: "bg-purple-500" }, // T
-  { shape: [[1, 1, 0], [0, 1, 1]], color: "bg-green-500" }, // S
-  { shape: [[0, 1, 1], [1, 1, 0]], color: "bg-red-500" }, // Z
-];
 
-type BoardType = (string | null)[][];
-type TetrominoType = number[][];
-
-type SequenceItem = { idx: number; col: number; };
-
-function getEmptyBoard(): BoardType {
-  return Array.from({ length: BOARD_ROWS }, () => Array(BOARD_COLS).fill(null));
-}
-
-function placeTetromino(
-  board: BoardType,
-  tetromino: TetrominoType,
-  row: number,
-  col: number,
-  color: string | null
-): BoardType {
-  const newBoard = board.map((r) => [...r]);
-  tetromino.forEach((tRow, rIdx) => {
-    tRow.forEach((cell, cIdx) => {
-      if (cell && newBoard[row + rIdx] && newBoard[row + rIdx][col + cIdx] !== undefined) {
-        newBoard[row + rIdx][col + cIdx] = color;
-      }
-    });
-  });
-  return newBoard;
-}
-
-// Helper to get the height of a tetromino
-function getTetrominoHeight(tetromino: TetrominoType) {
-  return tetromino.length;
-}
-
-function TetrisAnimation() {
-  const [board, setBoard] = useState<BoardType>(getEmptyBoard());
-  const [active, setActive] = useState<{idx: number, row: number, col: number} | null>(null);
-  const [step, setStep] = useState(0);
-
-  // Sequence: stack a variety of shapes, filling the board to the top
-  const sequence: SequenceItem[] = [
-    { idx: 0, col: 2 }, // I
-    { idx: 1, col: 3 }, // O
-    { idx: 2, col: 2 }, // T
-    { idx: 3, col: 2 }, // S
-    { idx: 4, col: 3 }, // Z
-    { idx: 0, col: 2 }, // I
-    { idx: 1, col: 3 }, // O
-    { idx: 2, col: 2 }, // T
-    { idx: 3, col: 2 }, // S
-    { idx: 4, col: 3 }, // Z
-  ];
-
-  useEffect(() => {
-    if (step >= sequence.length) return;
-
-    const { idx, col } = sequence[step];
-    const tetromino = TETROMINOES[idx].shape;
-    
-    // Calculate where this piece should land based on current board state
-    let landingRow = BOARD_ROWS - 1;
-    let canPlaceAnywhere = false;
-    
-    for (let row = BOARD_ROWS - 1; row >= 0; row--) {
-      let canPlace = true;
-      for (let r = 0; r < tetromino.length; r++) {
-        for (let c = 0; c < tetromino[r].length; c++) {
-          if (tetromino[r][c]) {
-            const boardRow = row + r;
-            const boardCol = col + c;
-            if (boardRow >= BOARD_ROWS || boardCol < 0 || boardCol >= BOARD_COLS || 
-                (boardRow >= 0 && board[boardRow][boardCol] !== null)) {
-              canPlace = false;
-              break;
-            }
-          }
-        }
-        if (!canPlace) break;
-      }
-      if (canPlace) {
-        landingRow = row;
-        canPlaceAnywhere = true;
-        break;
-      }
-    }
-
-    // If we can't place the piece anywhere, stop the animation
-    if (!canPlaceAnywhere) {
-      return;
-    }
-
-    // Animate the piece falling
-    let currentRow = 0;
-    const fallInterval = setInterval(() => {
-      if (currentRow < landingRow) {
-        setActive({ idx, row: currentRow, col });
-        currentRow++;
-      } else {
-        // Place the piece
-        setBoard(prevBoard => {
-          const newBoard = prevBoard.map(row => [...row]);
-          for (let r = 0; r < tetromino.length; r++) {
-            for (let c = 0; c < tetromino[r].length; c++) {
-              if (tetromino[r][c]) {
-                const boardRow = landingRow + r;
-                const boardCol = col + c;
-                if (boardRow >= 0 && boardRow < BOARD_ROWS && boardCol >= 0 && boardCol < BOARD_COLS) {
-                  newBoard[boardRow][boardCol] = TETROMINOES[idx].color;
-                }
-              }
-            }
-          }
-          return newBoard;
-        });
-        setActive(null);
-        clearInterval(fallInterval);
-        
-        // Move to next piece after a delay
-        setTimeout(() => {
-          setStep(prev => prev + 1);
-        }, 500);
-      }
-    }, 100);
-
-    return () => clearInterval(fallInterval);
-  }, [step, board]);
-
-  // Render the board with the active falling piece
-  let displayBoard = board.map((row) => [...row]);
-  if (active) {
-    displayBoard = placeTetromino(
-      displayBoard,
-      TETROMINOES[active.idx].shape,
-      active.row,
-      active.col,
-      TETROMINOES[active.idx].color
-    );
-  }
-
+function DigitalCactus() {
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="bg-gray-900 rounded-lg p-2 shadow-lg border-2 border-gray-700" style={{ width: 40 * BOARD_COLS, height: 32 * BOARD_ROWS }}>
-        <div className="grid" style={{ gridTemplateRows: `repeat(${BOARD_ROWS}, 1fr)`, gridTemplateColumns: `repeat(${BOARD_COLS}, 1fr)` }}>
-          {displayBoard.flat().map((cell, idx) => (
-            <div
-              key={idx}
-              className={`w-5 h-4 sm:w-8 sm:h-6 border border-gray-800 ${cell ? cell : "bg-gray-800"} transition-all duration-100`}
-              style={{ boxSizing: 'border-box' }}
-            />
-          ))}
+      <div className="bg-gray-900 rounded-lg p-4 shadow-lg border-2 border-gray-700 w-48 h-64 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-2">🌵</div>
+          <div className="text-green-400 text-sm font-mono">Digital Cactus</div>
         </div>
       </div>
     </div>
@@ -743,7 +592,7 @@ export default function Home() {
               </div>
             </div>
             <div className="flex-1 flex flex-col items-center justify-center relative w-full h-[340px] sm:h-[440px] animate-fade-in-delayed">
-              <TetrisAnimation />
+              <DigitalCactus />
             </div>
           </div>
         </Section>
