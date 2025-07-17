@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useState, useRef, useMemo, useCallback } from "react";
+import Image from 'next/image';
 
 
 
@@ -528,9 +529,11 @@ function TabbedProjects() {
             tabIndex={0}
             
           >
-            <img
+            <Image
               src={categoryImages[group.category as keyof typeof categoryImages]}
               alt={group.category + ' icon'}
+              width={40}
+              height={40}
               className="w-10 h-10 mb-2 object-contain drop-shadow-lg"
               draggable={false}
             />
@@ -730,9 +733,11 @@ function ExperienceTimeline() {
                 }}>
                   {/* Company logo and name */}
                   <div className={`flex items-center gap-3 mb-2 ${isLeft ? 'flex-row-reverse' : 'flex-row'}`}>
-                    <img
+                    <Image
                       src={exp.logo || "https://img.icons8.com/ios-filled/50/FFD600/company.png"}
                       alt={exp.company + ' logo'}
+                      width={40}
+                      height={40}
                       className="w-10 h-10 object-contain rounded-full border-2 bg-white shadow flex-shrink-0"
                       style={{ borderColor: exp.color === 'red' ? '#ef4444' : exp.color === 'blue' ? '#3b82f6' : exp.color === 'orange' ? '#f97316' : '#eab308' }}
                       draggable={false}
@@ -800,9 +805,11 @@ function ExperienceTimeline() {
             
             {/* Header with logo and company info */}
             <div className="flex items-center gap-4 mb-4">
-              <img
+              <Image
                 src={experienceEntries[expanded].logo || "https://img.icons8.com/ios-filled/50/FFD600/company.png"}
                 alt={experienceEntries[expanded].company + ' logo'}
+                width={48}
+                height={48}
                 className="w-12 h-12 object-contain rounded-full border-2 bg-white shadow"
                 style={{ borderColor: experienceEntries[expanded].color === 'red' ? '#ef4444' : experienceEntries[expanded].color === 'blue' ? '#3b82f6' : experienceEntries[expanded].color === 'orange' ? '#f97316' : '#eab308' }}
                 draggable={false}
