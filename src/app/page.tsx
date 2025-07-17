@@ -261,6 +261,53 @@ function MiniTetrisGame() {
   );
 }
 
+// Static Tetris Tree definition
+function StaticTetrisTree() {
+  // 12 rows x 8 columns
+  // We'll define a tree shape using Tetris colors
+  // null = empty, otherwise a Tailwind color class
+  const treeBoard: (string | null)[][] = [
+    // Row 0 (top)
+    [null, null, null, "bg-green-500", null, null, null, null],
+    // Row 1
+    [null, null, null, "bg-green-500", null, null, null, null],
+    // Row 2
+    [null, null, "bg-green-500", "bg-green-500", "bg-green-500", null, null, null],
+    // Row 3
+    [null, null, "bg-green-500", "bg-green-500", "bg-green-500", null, null, null],
+    // Row 4
+    [null, "bg-green-500", "bg-green-500", "bg-green-500", "bg-green-500", "bg-green-500", null, null],
+    // Row 5
+    [null, "bg-green-500", "bg-green-500", "bg-green-500", "bg-green-500", "bg-green-500", null, null],
+    // Row 6
+    ["bg-green-500", "bg-green-500", "bg-green-500", "bg-green-500", "bg-green-500", "bg-green-500", "bg-green-500", null],
+    // Row 7
+    ["bg-green-500", "bg-green-500", "bg-green-500", "bg-green-500", "bg-green-500", "bg-green-500", "bg-green-500", null],
+    // Row 8 (trunk)
+    [null, null, null, "bg-yellow-400", null, null, null, null],
+    // Row 9 (trunk)
+    [null, null, null, "bg-yellow-400", null, null, null, null],
+    // Row 10 (base)
+    [null, null, "bg-red-500", "bg-red-500", "bg-red-500", null, null, null],
+    // Row 11 (base)
+    [null, null, "bg-red-500", "bg-red-500", "bg-red-500", null, null, null],
+  ];
+
+  return (
+    <div className="bg-gray-900 rounded-lg p-2 shadow-lg border-2 border-gray-700" style={{ width: 40 * 8, height: 32 * 12 }}>
+      <div className="grid" style={{ gridTemplateRows: `repeat(12, 1fr)`, gridTemplateColumns: `repeat(8, 1fr)` }}>
+        {treeBoard.flat().map((cell, idx) => (
+          <div
+            key={idx}
+            className={`w-5 h-4 sm:w-8 sm:h-6 border border-gray-800 ${cell ? cell : "bg-gray-800"} transition-all duration-100`}
+            style={{ boxSizing: 'border-box' }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // Section components with smooth appear animations
 const Section = ({ id, title, children }: { id: string; title?: string; children: React.ReactNode }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -376,6 +423,7 @@ const groupedProjects = [
         description:
           "Designed and developed a full-stack blockchain-based group payment app to solve the social pressure of deciding who pays the tab. Built with Solidity smart contracts to enable group formation, voting on a designated payer, and conditional fund disbursement only when a target contribution is reached. Integrated MetaMask for wallet authentication and transaction signing, ensuring secure, user-controlled payments. All transactions and voting records are immutably stored on the blockchain for transparency. The app is deployed using Next.js with a React frontend and a Web3-enabled backend, providing a seamless decentralized experience for collaborative group payments.",
         technologies: ["Solidity", "MetaMask", "Web3", "Next.js", "React", "Blockchain"],
+        github: "https://github.com/rgarcia2304/block-pay"
       },
       {
         title: "Eterna | Reddit Filtering App",
@@ -383,6 +431,7 @@ const groupedProjects = [
         description:
           "Built a full-stack product recommendation app that filters Reddit discussions to surface high-quality suggestions based on community feedback. Users enter a product-related query, which is processed through the Reddit Scraper API (via RapidAPI) to gather relevant posts. The results are then passed to the OpenAI GPT API using prompt-based filtering to eliminate non-product discussions and rank responses by helpfulness. Non-product or vague queries are also automatically filtered. Deployed with Firebase for real-time database storage and built using React, Next.js, and styled-components for a modern, responsive UI.",
         technologies: ["React", "Next.js", "OpenAI", "Firebase", "RapidAPI", "Styled-components"],
+        github: "https://github.com/rgarcia2304/class-app"
       },
       {
         title: "Flight Application",
@@ -390,6 +439,7 @@ const groupedProjects = [
         description:
           "Independently designed and built a fully custom, microservice-based flight application from the ground up—no external APIs or tools used. Developed the Flight Creation microservice in Java using the Spring Framework, engineered the Booking system in C# with ASP.NET and MongoDB, and implemented the Payment microservice using GraphQL with Spring and MySQL. Constructed the entire backend architecture and frontend interface using React, managing all data flow, service communication, and storage logic manually to ensure full control and understanding of the system. This project showcases complete ownership over microservice design, API creation, and full-stack integration.",
         technologies: ["Java", "Spring", "C#", "ASP.NET", "MongoDB", "GraphQL", "MySQL", "React"],
+        github: "https://github.com/rgarcia2304/FLIGHT-APP"
       },
       {
         title: "Course Scheduler",
@@ -495,7 +545,7 @@ function TabbedProjects() {
         {groupedProjects[selectedTab].projects.map((project, idx) => (
           <button
             key={project.title}
-            className="bg-black/70 border border-gray-800 rounded-xl p-6 shadow-lg flex flex-col hover:scale-[1.04] transition-all duration-300 text-left outline-none focus:ring-2 focus:ring-yellow-400 cursor-pointer"
+            className="bg-black/70 border border-gray-800 rounded-xl p-6 shadow-lg flex flex-col hover:scale-[1.04] transition-all duration-300 text-left outline-none focus:ring-2 focus:ring-yellow-400 cursor-pointer relative"
             style={{ zIndex: expanded && expanded.group === selectedTab && expanded.idx === idx ? 50 : 1 }}
             onClick={() => setExpanded({ group: selectedTab, idx })}
             tabIndex={0}
@@ -515,6 +565,22 @@ function TabbedProjects() {
                 </span>
               ))}
             </div>
+            {/* GitHub icon link in card if present */}
+            {project.github && (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute bottom-3 right-3 p-2 rounded-full bg-gray-900 border border-cyan-400 hover:bg-cyan-900 transition-colors"
+                onClick={e => e.stopPropagation()}
+                tabIndex={0}
+                aria-label="GitHub Repository"
+              >
+                <svg className="w-5 h-5 text-cyan-400" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+              </a>
+            )}
           </button>
         ))}
       </div>
@@ -582,7 +648,7 @@ const experienceEntries = [
     logo: "https://1000logos.net/wp-content/uploads/2022/03/Staples-Logo.png",
     color: "red", // Staples red
     description:
-      "Worked in AGILE team of over 15 engineers. Wrote RESTFUL APIs that combined data from Approvals and Checkout orders. Developed dashboard allowing engineers to directly modify orders status for client conflict resolution. Dashboard sped up customer order resolution by 87% for order error problems.",
+      "Worked in AGILE team of over 15 engineers. Wrote RESTFUL APIs that combined data from Approvals and Checkout orders. Developed dashboard allowing engineers to directly modify orders  client conflict resolution.",
   },
   {
     date: "March 2024 - Present",
@@ -837,7 +903,7 @@ export default function Home() {
               </div>
             </div>
             <div className="flex-1 flex flex-col items-center justify-center relative w-full h-[340px] sm:h-[440px] animate-fade-in-delayed">
-              <MiniTetrisGame />
+              <StaticTetrisTree />
             </div>
           </div>
         </Section>
@@ -858,7 +924,7 @@ export default function Home() {
                   </div>
                   <p className="text-gray-300 text-lg leading-relaxed">
                     Hello! I&apos;m <span className="text-cyan-400 font-semibold">Rodrigo</span>, a senior computer science student 
-                    who loves to explore different challenges in programming and beyond.
+                    who is interested in backend and systems software engineering. But I have an Open mind regarding all technologies and enjoy exploring different software tools.
                   </p>
                   <p className="text-gray-300 text-lg leading-relaxed">
                     Currently in my free time, I&apos;m diving deep into <span className="text-cyan-400 font-semibold">GoLang</span> and 
