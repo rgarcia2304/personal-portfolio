@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useState, useRef } from "react";
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
 
 
@@ -112,6 +113,7 @@ const navLinks = [
   { id: "hero", label: "Home" },
   { id: "about", label: "About" },
   { id: "education", label: "Education" },
+  { id: "involvement", label: "Involvement" },
   { id: "projects", label: "Projects" },
   { id: "experience", label: "Experience" },
   { id: "skills", label: "Skills" },
@@ -583,21 +585,77 @@ function ExperienceTimeline() {
   );
 }
 
+function useScrollSpy(ids: string[], offset = 80) {
+  const [activeId, setActiveId] = useState(ids[0]);
+  useEffect(() => {
+    function onScroll() {
+      let found = ids[0];
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top - offset < 0) {
+            found = id;
+          }
+        }
+      }
+      setActiveId(found);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [ids, offset]);
+  return activeId;
+}
+
+// Involvement data
+const involvementEntries = [
+  {
+    org: "Society of Hispanic Professional Engineers",
+    role: "Member, Networking Director",
+    date: "2023 - Present",
+    logo: "https://img.icons8.com/ios-filled/100/FFD600/source-code.png",
+    description: "",
+    link: "https://acm.psu.edu/"
+  },
+  
+];
+
 export default function Home() {
+  const activeSection = useScrollSpy(navLinks.map(l => l.id), 90);
   return (
     <div className="relative w-full bg-black text-white scroll-smooth">
-      {/* Sticky Navigation Bar */}
-      <nav className="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur border-b border-gray-800">
-        <div className="max-w-5xl mx-auto flex flex-row items-center justify-center gap-4 py-2">
-          {navLinks.map((link) => (
-            <a
-              key={link.id}
-              href={`#${link.id}`}
-              className="text-gray-300 hover:text-cyan-400 px-3 py-1 rounded transition-colors duration-200 text-base font-medium"
-            >
-              {link.label}
-            </a>
-          ))}
+      {/* Modern Glassy Navigation Bar */}
+      <nav className="fixed top-4 left-1/2 -translate-x-1/2 w-[95vw] max-w-3xl z-50 rounded-2xl bg-black/40 border border-cyan-400/20 shadow-xl backdrop-blur-md transition-all duration-300">
+        <div className="flex flex-row items-center gap-1 py-2 px-1 sm:px-3 overflow-x-auto scrollbar-hide whitespace-nowrap">
+          {navLinks.map((link) => {
+            const isActive = activeSection === link.id;
+            return (
+              <a
+                key={link.id}
+                href={`#${link.id}`}
+                className={`relative px-3 py-1 mx-0.5 rounded-full font-semibold text-base transition-all duration-200 outline-none focus:ring-2 focus:ring-cyan-400/60
+                  ${isActive ? 'text-cyan-300' : 'text-gray-200 hover:text-cyan-200'}
+                `}
+                tabIndex={0}
+              >
+                <span className="relative z-10">{link.label}</span>
+                {/* Animated underline/pill */}
+                <span
+                  className={`absolute left-0 top-0 w-full h-full rounded-full transition-all duration-300 -z-1
+                    ${isActive ? 'bg-cyan-400/20 shadow-cyan-400/10 shadow-md scale-100' : 'scale-0 group-hover:scale-100'}
+                  `}
+                  aria-hidden="true"
+                />
+                <style jsx>{`
+                  a:hover > span:last-child {
+                    background: rgba(34,211,238,0.10);
+                    transform: scale(1);
+                  }
+                `}</style>
+              </a>
+            );
+          })}
         </div>
       </nav>
 
@@ -717,7 +775,7 @@ export default function Home() {
                     <span className="text-gray-100 text-lg font-medium">I enjoy reading primarily nonfiction. Some of my favorite books include <span className='text-purple-300 font-bold'>Pillars of The Earth</span> and <span className='text-purple-300 font-bold'>Crime and Punishment</span>.</span>
                   </div>
                   <div className="bg-yellow-400/10 border border-yellow-400/30 rounded-xl p-4 shadow-md animate-fade-in" style={{ animationDelay: '200ms' }}>
-                    <span className="text-gray-100 text-lg font-medium">One day I hope to learn <span className='text-yellow-300 font-bold'>4 of the Romantic Languages</span>!</span>
+                    <span className="text-gray-100 text-lg font-medium">One day I hope to learn <span className='text-yellow-300 font-bold'>French, Portuguese, and Italian</span>!</span>
                   </div>
                 </div>
               </div>
@@ -794,6 +852,29 @@ export default function Home() {
                 </div>
               </div>
             </div>
+          </div>
+        </Section>
+        <Section id="involvement" title="Involvement">
+          <div className="max-w-4xl mx-auto flex flex-col gap-8">
+            {involvementEntries.map((inv, idx) => (
+              <div key={idx} className="flex flex-col sm:flex-row items-start gap-6 bg-black/30 border-l-4 border-yellow-400/40 p-6 rounded-xl shadow-md">
+                {/* Left: Logo, Org, Role, Date */}
+                <div className="flex flex-row sm:flex-col items-center sm:items-start gap-4 min-w-[180px]">
+                  {inv.logo && (
+                    <img src={inv.logo} alt={inv.org + ' logo'} className="w-12 h-12 object-contain rounded-full bg-white/80 border border-yellow-400/30 shadow" />
+                  )}
+                  <div>
+                    <div className="text-base font-bold text-yellow-300">{inv.org}</div>
+                    <div className="text-sm text-gray-400">{inv.role}</div>
+                    <div className="text-xs text-gray-500">{inv.date}</div>
+                  </div>
+                </div>
+                {/* Right: Description */}
+                <div className="flex-1 text-gray-200 text-base leading-relaxed">
+                  {inv.description || <span className="italic text-gray-500">The story starts with me looking to connect with our chapter alumni. Seeing as there was no infastructure or constant communication with alumni I became Networking Director. Overseeing the position I created a multi-thousand dollar funding pipeline with alumni. The social media pages grew by over 500%. Through this I brought I introduced new workshops with alumni and brought in new companies. The mentoring program called MentorSHPE also oversaw an expansion of 2X and was increased to include alumni and Masters/PHD students under my tenure. My proudest accomplishment was that with our extra funding we were able to take 10% more people to the SHPE National Convention!</span>}
+                </div>
+              </div>
+            ))}
           </div>
         </Section>
         <Section id="projects" title="Projects">
@@ -1024,6 +1105,9 @@ export default function Home() {
         .animate-fishing-scene {
           animation: fishing-scene 6s infinite ease-in-out;
         }
+
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
     </div>
   );
