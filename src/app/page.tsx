@@ -1,45 +1,11 @@
 'use client';
-import React, { useEffect, useState, useRef, useMemo, useCallback } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Image from 'next/image';
 
 
 
-// Mini Tetris Game
-const BOARD_ROWS = 12;
-const BOARD_COLS = 8;
 
-const TETROMINOES = [
-  { shape: [[1, 1, 1, 1]], color: "bg-cyan-400" }, // I
-  { shape: [[1, 1], [1, 1]], color: "bg-yellow-400" }, // O
-  { shape: [[0, 1, 0], [1, 1, 1]], color: "bg-purple-500" }, // T
-  { shape: [[1, 1, 0], [0, 1, 1]], color: "bg-green-500" }, // S
-  { shape: [[0, 1, 1], [1, 1, 0]], color: "bg-red-500" }, // Z
-];
 
-type BoardType = (string | null)[][];
-type TetrominoType = number[][];
-
-function getEmptyBoard(): BoardType {
-  return Array.from({ length: BOARD_ROWS }, () => Array(BOARD_COLS).fill(null));
-}
-
-function placeTetromino(
-  board: BoardType,
-  tetromino: TetrominoType,
-  row: number,
-  col: number,
-  color: string | null
-): BoardType {
-  const newBoard = board.map((r) => [...r]);
-  tetromino.forEach((tRow, rIdx) => {
-    tRow.forEach((cell, cIdx) => {
-      if (cell && newBoard[row + rIdx] && newBoard[row + rIdx][col + cIdx] !== undefined) {
-        newBoard[row + rIdx][col + cIdx] = color;
-      }
-    });
-  });
-  return newBoard;
-}
 
 // Static Tetris Tree definition
 function StaticTetrisTree() {
