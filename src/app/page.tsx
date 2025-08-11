@@ -139,10 +139,10 @@ const groupedProjects = [
         technologies: ["C", "Linux", "Networking", "LRU Cache"],
       },
       {
-        title: "C CLI Utility Suite",
-        date: "May 2024 - June 2024",
+        title: "Mini Shell",
+        date: "March 2025 - April 2025",
         description:
-          "Developed a suite of command-line utilities in C for Linux, including file manipulation, process management, and custom scripting tools. Focused on robust error handling, efficient memory usage, and user-friendly CLI design. Demonstrated proficiency in low-level systems programming and Unix tool conventions.",
+          "Emulated core UNIX shell behavior by developing a custom Bash-like environment supporting process creation, directory navigation, piping, I/O redirection, and conditional, sequential, and parallel command execution.",
         technologies: ["C", "Linux", "CLI", "Systems Programming"],
       },
       {
@@ -415,7 +415,7 @@ const experienceEntries = [
     logo: "https://assets.amazon.science/fb/1c/07d25693486eb3d6b49091864af7/amazonscience-squidink.svg",
     color: "orange", // Amazon orange
     description:
-      "One of seven students selected to go work in Metz, France in the Amazon SURE program with Amazon and Georgia tech. Developed sensor monitor supporting team of 4 engineers. Gained exposure to working with ROS2 and embedded system controls working with Husky UAV. Project prevented 1x week of downtime for engineers contributing to 20% more data being collected ",
+      "One of seven students selected to go work in Metz, France in the Amazon SURE program with Amazon and Georgia Tech. Developed sensor monitor supporting team of 4 engineers. Gained exposure to working with ROS2 and embedded system controls working with Husky UAV. Project immediatley diagnosed system failures saving, allowing for 20% more experimentation per week",
   },
 ];
 
@@ -733,11 +733,11 @@ export default function Home() {
                   </div>
                   <p className="text-gray-300 text-lg leading-relaxed">
                     Hello! I&apos;m <span className="text-cyan-400 font-semibold">Rodrigo</span>, a senior computer science student 
-                    who is interested in backend and systems software engineering. But I have an Open mind regarding all technologies and enjoy exploring different software tools.
+                    who is interested in backend and systems software engineering, though I enjoy exploring many different software domains.
                   </p>
                   <p className="text-gray-300 text-lg leading-relaxed">
-                    Currently in my free time, I&apos;m diving deep into <span className="text-cyan-400 font-semibold">GoLang</span> and 
-                    exploring <span className="text-cyan-400 font-semibold">systems-level work</span> to expand my technical horizons.
+                    When I have free time I am currently doing a deep dive into <span className="text-cyan-400 font-semibold">GoLang</span> and 
+                    exploring <span className="text-cyan-400 font-semibold">systems-level work</span>.
                   </p>
                 </div>
                 
@@ -771,7 +771,7 @@ export default function Home() {
                     <span className="text-gray-100 text-lg font-medium">I enjoy being active through playing soccer and weightlifting, but enjoy all sports. I am a lifetime <span className='text-green-300 font-bold'>Manchester United</span> fan.</span>
                   </div>
                   <div className="bg-purple-400/10 border border-purple-400/30 rounded-xl p-4 shadow-md animate-fade-in" style={{ animationDelay: '100ms' }}>
-                    <span className="text-gray-100 text-lg font-medium">I enjoy reading primarily nonfiction. Some of my favorite books include <span className='text-purple-300 font-bold'>Pillars of The Earth</span> and <span className='text-purple-300 font-bold'>Crime and Punishment</span>.</span>
+                    <span className="text-gray-100 text-lg font-medium">I enjoy reading, and while primarily interested in nonfiction, I have begun to read some of the classic novels. My favorite books include <span className='text-purple-300 font-bold'>Pillars of The Earth</span> and <span className='text-purple-300 font-bold'>Crime and Punishment</span>.</span>
                   </div>
                   <div className="bg-yellow-400/10 border border-yellow-400/30 rounded-xl p-4 shadow-md animate-fade-in" style={{ animationDelay: '200ms' }}>
                     <span className="text-gray-100 text-lg font-medium">One day I hope to learn <span className='text-yellow-300 font-bold'>French, Portuguese, and Italian</span>!</span>
@@ -870,7 +870,7 @@ export default function Home() {
                 </div>
                 {/* Right: Description */}
                 <div className="flex-1 text-gray-200 text-base leading-relaxed">
-                  {inv.description || <span className="italic text-gray-500">The story starts with me looking to connect with our chapter alumni. Seeing as there was no infastructure or constant communication with alumni I became Networking Director. Overseeing the position I created a multi-thousand dollar funding pipeline with alumni. The social media pages grew by over 500%. Through this I brought I introduced new workshops with alumni and brought in new companies. The mentoring program called MentorSHPE also oversaw an expansion of 2X and was increased to include alumni and Masters/PHD students under my tenure. My proudest accomplishment was that with our extra funding we were able to take 10% more people to the SHPE National Convention!</span>}
+                  {inv.description || <span className="italic text-white-500">The story starts with me looking to connect with our chapter alumni. Upon discovering that there was no infastructure or constant communication with alumni I became Networking Director. In this position I created a multi-thousand dollar funding pipeline with alumni. The social media pages grew by over 500%. I introduced new workshops featuring alumni and brought in new companies to recruit members of our chapter. Under my tenure, the mentoring program called MentorSHPE also oversaw an expansion of 2X and grew to include alumni and Masters/PHD students. My proudest accomplishment was that with our extra funding we were able to take 10% more people to the SHPE National Convention!</span>}
                 </div>
               </div>
             ))}
