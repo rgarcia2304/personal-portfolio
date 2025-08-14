@@ -689,7 +689,7 @@ export default function Home() {
                 </a>
                 
                 <a
-                  href="rgarcia22141@gmail.com"
+                  href="mailto:rgarcia22141@gmail.com"
                   className="group p-3 bg-black/50 border-2 border-green-400/30 rounded-full hover:border-green-400 hover:scale-110 transition-all duration-300"
                   aria-label="Email"
                 >
