@@ -195,6 +195,14 @@ const groupedProjects = [
           "Developed a Java-based course scheduler application using a layered architecture, separating concerns across user interface, business logic, and data access layers. Built an interactive GUI for scheduling classes, leveraging Object-Oriented Programming to map each course to its corresponding database table. Enhanced functionality by implementing SQL queries for efficient data retrieval and manipulation, enabling dynamic updates and interaction between the GUI and the backend database.",
         technologies: ["Java", "SQL", "OOP", "GUI"],
       },
+      {
+        title: "AI Agent",
+        date: "August 2025- September 2025",
+        description:
+          "Created an AI agent that utilizied an LLM to perform tasks on a codebase autonomolsy, with prompting. The Agent could read file directories, file contents, write files, and also run files.  ",
+        technologies: ["Python","Gemini"],
+        github: "https://github.com/rgarcia2304/AI-Agent",
+      },
     ],
   },
   {
@@ -219,6 +227,7 @@ const groupedProjects = [
           "Developed an autonomous vacuum cleaning simulation using the ACT-R cognitive architecture in Python to model intelligent Roomba-like behavior. Implemented motor and visual module rules to execute swirling cleaning patterns and respond dynamically to collisions with debris or walls. Leveraged ACT-R's visual processing to guide real-time decision-making and adaptive navigation in cluttered environments, simulating human-like perception and action in robotic cleaning tasks. Leveraged HDM to create intelligent recall of debris simulating real human memory accelerating map cleaning speed.",
         technologies: ["Python", "ACT-R", "HDM", "Simulation"],
       },
+
     ],
   },
 ];
