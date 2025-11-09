@@ -58,28 +58,53 @@ function StaticTetrisTree() {
 const Section = ({ id, title, children }: { id: string; title?: string; children: React.ReactNode }) => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+  const hasBeenVisible = useRef(false);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-      }
-    );
-
     const currentRef = sectionRef.current;
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
+    if (!currentRef) return;
 
+    // Check if element is already visible on mount (prevents flash for hero section)
+    // Use requestAnimationFrame to ensure DOM is fully rendered
+    requestAnimationFrame(() => {
+      if (!currentRef) return;
+      
+      const rect = currentRef.getBoundingClientRect();
+      const isAlreadyVisible = rect.top < window.innerHeight && rect.bottom > 0;
+      
+      if (isAlreadyVisible && !hasBeenVisible.current) {
+        hasBeenVisible.current = true;
+        setIsVisible(true);
+        return; // Don't set up observer if already visible
+      }
+
+      observerRef.current = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting && !hasBeenVisible.current) {
+            hasBeenVisible.current = true;
+            setIsVisible(true);
+            // Disconnect after first visibility to prevent re-triggers
+            if (observerRef.current) {
+              observerRef.current.disconnect();
+              observerRef.current = null;
+            }
+          }
+        },
+        {
+          threshold: 0.1,
+          rootMargin: '0px 0px -100px 0px'
+        }
+      );
+
+      observerRef.current.observe(currentRef);
+    });
+
+    // Cleanup function
     return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+        observerRef.current = null;
       }
     };
   }, []);
@@ -218,7 +243,7 @@ const groupedProjects = [
     ],
   },
   {
-    category: "Simulation & Other",
+    category: "Other Fun Stuff",
     projects: [
       {
         title: "Autonomous Vacuum Cleaner",
@@ -227,7 +252,14 @@ const groupedProjects = [
           "Developed an autonomous vacuum cleaning simulation using the ACT-R cognitive architecture in Python to model intelligent Roomba-like behavior. Implemented motor and visual module rules to execute swirling cleaning patterns and respond dynamically to collisions with debris or walls. Leveraged ACT-R's visual processing to guide real-time decision-making and adaptive navigation in cluttered environments, simulating human-like perception and action in robotic cleaning tasks. Leveraged HDM to create intelligent recall of debris simulating real human memory accelerating map cleaning speed.",
         technologies: ["Python", "ACT-R", "HDM", "Simulation"],
       },
-
+        {
+          title: "Static Site Generator",
+          date: "February 2025 - March 2025",
+          description:
+            "Made this static site generator which parses markdown files and turns it into HTML. This was built by using builing markdown text parsing which first converts lines of markdown into text nodes, then to html nodes. Blocks are also parsed. To represent the hiearchy of the markdown to html recursive node tree structure was used to represent relationships between HTML nodes. The site generator also performs clean up for builds, crawls content files, and performs template injection. ",
+          technologies: ["Python"],
+          github: "https://github.com/rgarcia2304/static_site",
+        },
     ],
   },
 ];
@@ -236,7 +268,7 @@ const categoryImages = {
   "Systems & C": "https://img.icons8.com/ios-filled/100/FFD600/console.png",
   "Web & Blockchain": "https://img.icons8.com/ios-filled/100/FFD600/cloud-network.png",
   "AI & Data": "https://img.icons8.com/ios-filled/100/FFD600/artificial-intelligence.png",
-  "Simulation & Other": "https://img.icons8.com/ios-filled/100/FFD600/robot-2.png",
+  "Other Fun Stuff": "https://img.icons8.com/ios-filled/100/FFD600/robot-2.png",
 };
 
 function TabbedProjects() {
@@ -244,12 +276,15 @@ function TabbedProjects() {
   const [expanded, setExpanded] = useState<null | { group: number; idx: number }>(null);
   const [isVisible, setIsVisible] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const hasBeenVisible = useRef(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && !hasBeenVisible.current) {
+          hasBeenVisible.current = true;
           setIsVisible(true);
+          observer.disconnect();
         }
       },
       {
@@ -265,7 +300,7 @@ function TabbedProjects() {
 
     return () => {
       if (currentRef) {
-        observer.unobserve(currentRef);
+        observer.disconnect();
       }
     };
   }, []);
@@ -432,12 +467,15 @@ function ExperienceTimeline() {
   const [expanded, setExpanded] = useState<null | number>(null);
   const [isVisible, setIsVisible] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const hasBeenVisible = useRef(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && !hasBeenVisible.current) {
+          hasBeenVisible.current = true;
           setIsVisible(true);
+          observer.disconnect();
         }
       },
       {
@@ -453,7 +491,7 @@ function ExperienceTimeline() {
 
     return () => {
       if (currentRef) {
-        observer.unobserve(currentRef);
+        observer.disconnect();
       }
     };
   }, []);
@@ -596,18 +634,25 @@ function ExperienceTimeline() {
 function useScrollSpy(ids: string[], offset = 80) {
   const [activeId, setActiveId] = useState(ids[0]);
   useEffect(() => {
+    let ticking = false;
     function onScroll() {
-      let found = ids[0];
-      for (const id of ids) {
-        const el = document.getElementById(id);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top - offset < 0) {
-            found = id;
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          let found = ids[0];
+          for (const id of ids) {
+            const el = document.getElementById(id);
+            if (el) {
+              const rect = el.getBoundingClientRect();
+              if (rect.top - offset < 0) {
+                found = id;
+              }
+            }
           }
-        }
+          setActiveId(prev => prev !== found ? found : prev);
+          ticking = false;
+        });
+        ticking = true;
       }
-      setActiveId(found);
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
@@ -748,6 +793,11 @@ export default function Home() {
                     When I have free time I am currently doing a deep dive into <span className="text-cyan-400 font-semibold">GoLang</span> and 
                     exploring <span className="text-cyan-400 font-semibold">systems-level work</span>.
                   </p>
+                  <div className="mt-4 pt-4 border-t border-cyan-400/20">
+                    <p className="text-gray-400 text-base leading-relaxed">
+                      If you want to check out more work, I built a <a href="#projects" className="text-purple-400 hover:text-purple-300 font-semibold underline decoration-purple-400/50 hover:decoration-purple-400 transition-colors">static site generator from scratch</a> that hosts some of my personal essays and other writing!
+                    </p>
+                  </div>
                 </div>
                 
                 {/* Right side - Key highlights */}
