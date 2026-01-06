@@ -7,7 +7,7 @@ import Image from 'next/image';
 
 
 
-// Simplified Section component - clean and simple
+
 const Section = ({ id, title, children }: { id: string; title?: string; children: React.ReactNode }) => {
   return (
     <section 
@@ -88,6 +88,15 @@ const groupedProjects = [
     category: "Web & Blockchain",
     projects: [
       {
+        title: "Pokemon Deck Game Simulator",
+        date: "November 2025 - December 2025",
+        description:
+          "PokéDeck is a systems focused Go CLI application that recreates a Pokémon game experience through a custom interactive REPL. The project emphasizes clean architecture and performance, featuring a thread safe LRU cache with a background cleanup goroutine to efficiently manage external Pokémon API requests. It includes persistent local storage for user decks, a fully modular turn-based battle engine with AI-controlled opponents, move selection, and type based damage calculations. Core game logic is intentionally decoupled from terminal rendering to ensure testability, maintainability, and extensibility, showcasing practical use of concurrency, state management, and domain modeling in Go.",
+        technologies: ["Go"],
+        github: "https://github.com/rgarcia2304/pokedexcli",
+        type: "personal",
+      },
+      {
         title: "Group-Payment App",
         date: "April 2025 - Present",
         description:
@@ -144,6 +153,15 @@ const groupedProjects = [
         technologies: ["Python", "PyTorch", "Hugging Face", "NLP", "LoRA"],
         type: "class",
       },
+      {
+        title: "Poultry Health Monitor",
+        date: "August 2025 - December 2025",
+        description:
+          "Worked in collaboration with a Nigerian Start Up funded by the United Nations to come up with a solution to detecting bird influenza. Architected the software process which connected and processed decisions in the poultry health monitor. Spent majority of project working on the weight and camera subsystem. For weight subsystem programmed a strain gauge weight system which used weights of chickens to flag for signs of illness, when reading weights. Created a chicken detection system using usb cameras that worked using transfer learning techniques.  ",
+        technologies: ["Embedded Systems", "PyTorch", "RPi4"],
+        type: "class",
+      },
+
     ],
   },
   {
@@ -243,6 +261,7 @@ function TabbedProjects() {
                 </svg>
               </a>
             )}
+    
           </button>
         ))}
       </div>
@@ -551,16 +570,15 @@ export default function Home() {
               <h3 className="text-2xl sm:text-3xl font-black text-gray-900 mb-4 sm:mb-6">Who I Am</h3>
               <div className="space-y-4 text-base sm:text-lg text-gray-700 leading-relaxed">
                 <p>
-                  Hello! I&apos;m <span className="font-black text-gray-900">Rodrigo</span>, a senior computer science student 
-                    who is interested in backend and systems software engineering, though I enjoy exploring many different software domains.
+                  Hello! I&apos;m <span className="font-black text-gray-900">Rodrigo</span>, a senior computer science student. 
+                  My passion lies in logic and I am aspiring to be a software engineer!
                   </p>
                 <p>
-                  When I have free time I am currently doing a deep dive into <span className="font-black text-gray-900">GoLang</span> and 
-                  exploring <span className="font-black text-gray-900">systems-level work</span>.
+                  Currently I am learning how to build backend systems in <span className="font-black text-gray-900">GoLang</span>.
                 </p>
                 <div className="mt-6 pt-6 border-t-2 border-gray-900">
                   <p className="text-base">
-                    If you want to check out more work, I built a <a href="https://rgarcia2304.github.io/static_site/" className="font-black text-gray-900 underline hover:no-underline">static site generator from scratch</a> that hosts some of my personal essays and other writing!
+                    If you want to check out some non tech stuff, I built a <a href="https://rgarcia2304.github.io/static_site/" className="font-black text-gray-900 underline hover:no-underline">static site generator from scratch</a> that hosts some of my personal essays and other writing!
                   </p>
                 </div>
               </div>
@@ -568,7 +586,7 @@ export default function Home() {
 
             {/* Beyond Programming */}
             <div className="bg-white border-2 border-gray-900 rounded-2xl p-6 sm:p-8 shadow-lg">
-              <h3 className="text-2xl sm:text-3xl font-black text-gray-900 mb-4 sm:mb-6">Beyond Programming</h3>
+              <h3 className="text-2xl sm:text-3xl font-black text-gray-900 mb-4 sm:mb-6">A little more about me ...</h3>
               <div className="space-y-4">
                 <div className="border-2 border-gray-900 rounded-xl p-4">
                   <p className="text-base sm:text-lg text-gray-700">
@@ -582,7 +600,7 @@ export default function Home() {
               </div>
                 <div className="border-2 border-gray-900 rounded-xl p-4">
                   <p className="text-lg text-gray-700">
-                    One day I hope to learn <span className='font-black text-gray-900'>French, Portuguese, and Italian</span>!
+                    <span className='font-black text-gray-900'>Huge Ben Franklin fan</span>!
                   </p>
                   </div>
               </div>
@@ -607,7 +625,7 @@ export default function Home() {
                     
                     <div className="border-2 border-gray-900 rounded-xl p-4">
                       <h4 className="text-lg font-black text-gray-900 mb-2">Awards</h4>
-                      <p className="text-gray-700">Lenfest Scholar, Deans List</p>
+                      <p className="text-gray-700">Lenfest Scholar, Deans List, College of Agriculture Best Agriculture Project Award</p>
                     </div>
                   </div>
                 </div>
@@ -618,13 +636,7 @@ export default function Home() {
                   
                   <div className="grid grid-cols-2 gap-3">
                     <div className="border-2 border-gray-900 rounded-lg p-3">
-                      <span className="text-gray-900 text-sm font-bold">Data Structures</span>
-                    </div>
-                    <div className="border-2 border-gray-900 rounded-lg p-3">
-                      <span className="text-gray-900 text-sm font-bold">Algorithms</span>
-                    </div>
-                    <div className="border-2 border-gray-900 rounded-lg p-3">
-                      <span className="text-gray-900 text-sm font-bold">Software Engineering</span>
+                      <span className="text-gray-900 text-sm font-bold">Data Structures and Algorithms</span>
                     </div>
                     <div className="border-2 border-gray-900 rounded-lg p-3">
                       <span className="text-gray-900 text-sm font-bold">Web Development</span>
@@ -640,6 +652,9 @@ export default function Home() {
                     </div>
                     <div className="border-2 border-gray-900 rounded-lg p-3">
                       <span className="text-gray-900 text-sm font-bold">Linear Programming</span>
+                    </div>
+                    <div className="border-2 border-gray-900 rounded-lg p-3">
+                      <span className="text-gray-900 text-sm font-bold">Computer Networks</span>
                     </div>
                   </div>
                 </div>
@@ -753,6 +768,8 @@ export default function Home() {
           <div className="max-w-2xl mx-auto px-4 text-gray-900 text-base sm:text-lg text-center">
             <p className="font-bold mb-4">Email: <a href="mailto:rgarcia22141@gmail.com" className="font-black underline break-all">rgarcia22141@gmail.com</a></p>
             <p className="font-bold">LinkedIn: <a href="https://www.linkedin.com/in/rodrigo-garcia-penn200423/" target="_blank" rel="noopener noreferrer" className="font-black underline break-all">rodrigo-garcia-penn200423</a></p>
+            <p className="font-bold">Resume: <a href="https://drive.google.com/file/d/1WT7V6E8E9lbCtBzMyYrcneCj8wY48k07/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="font-black underline break-all">locatedHere</a></p>
+
           </div>
         </Section>
       </main>
