@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState} from "react";
 import Image from 'next/image';
 
 
@@ -347,8 +347,6 @@ const experienceEntries = [
 ];
 
 function ExperienceTimeline() {
-  const [expanded, setExpanded] = useState<null | number>(null);
-
   return (
     <div className="w-full max-w-4xl mx-auto px-4">
       <div className="space-y-6 sm:space-y-8">
